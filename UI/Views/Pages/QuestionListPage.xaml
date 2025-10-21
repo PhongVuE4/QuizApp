@@ -8,44 +8,59 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="QuestionListPage">
 
-    <Grid Background="#F6F6F6">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Viewbox Stretch="Uniform" StretchDirection="Both">
+        <Grid Background="#F6F6F6">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!-- Bộ lọc -->
-        <StackPanel Orientation="Horizontal" Margin="20">
-            <ComboBox x:Name="ClassComboBox" Width="150" Margin="0,0,10,0" 
-                      SelectionChanged="ClassComboBox_SelectionChanged"/>
-            <ComboBox x:Name="SubjectComboBox" Width="150" Margin="0,0,10,0" 
-                      SelectionChanged="SubjectComboBox_SelectionChanged"/>
-            <Button Content="Làm mới" Click="ReloadButton_Click" Width="100" />
-        </StackPanel>
+            <!-- Bộ lọc -->
+            <StackPanel Orientation="Horizontal" Margin="20">
+                <ComboBox x:Name="ClassComboBox"
+                  Width="150"
+                  Margin="0,0,10,0"
+                  IsEditable="True"
+                  StaysOpenOnEdit="True"
+                  PreviewTextInput="ComboBox_PreviewTextInput"
+                  KeyDown="ComboBox_KeyDown"
+                  SelectionChanged="ClassComboBox_SelectionChanged" />
 
-        <!-- Danh sách bộ câu hỏi -->
-        <WrapPanel x:Name="QuestionSetPanel" Grid.Row="1" Margin="10" />
+                <ComboBox x:Name="SubjectComboBox"
+                  Width="150"
+                  Margin="0,0,10,0"
+                  IsEditable="True"
+                  StaysOpenOnEdit="True"
+                  PreviewTextInput="ComboBox_PreviewTextInput"
+                  KeyDown="ComboBox_KeyDown"
+                  SelectionChanged="SubjectComboBox_SelectionChanged" />
+                <Button Content="Làm mới" Click="ReloadButton_Click" Width="100" />
+            </StackPanel>
 
-        <!-- Danh sách câu hỏi chi tiết -->
-        <ListView x:Name="QuestionList" Grid.Row="1" Margin="10" Visibility="Collapsed">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Câu hỏi" DisplayMemberBinding="{Binding QuestionText}" Width="400"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+            <!-- Danh sách bộ câu hỏi -->
+            <WrapPanel x:Name="QuestionSetPanel" Grid.Row="1" Margin="10" />
 
-        <!-- Nút Start -->
-        <Button x:Name="StartButton"
-                Content="Bắt đầu"
-                Width="150"
-                Height="40"
-                Grid.Row="2"
-                Margin="0,10,0,20"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Bottom"
-                IsEnabled="False"
-                Click="StartButton_Click"/>
-    </Grid>
+            <!-- Danh sách câu hỏi chi tiết -->
+            <ListView x:Name="QuestionList" Grid.Row="1" Margin="10" Visibility="Collapsed">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Câu hỏi" DisplayMemberBinding="{Binding QuestionText}" Width="400"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <!-- Nút Start -->
+            <Button x:Name="StartButton"
+            Content="Bắt đầu"
+            Width="150"
+            Height="40"
+            Grid.Row="2"
+            Margin="0,10,0,20"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            IsEnabled="False"
+            Click="StartButton_Click"/>
+        </Grid>
+    </Viewbox>
 </Page>
