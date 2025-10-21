@@ -7,11 +7,37 @@
         xmlns:Controls="clr-namespace:UI.Controls"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="MainWindown" Height="450" Width="800">
-    <DockPanel>
-        <Controls:TopBar DockPanel.Dock="Top"/>
-        <Grid>
-            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
-        </Grid>
-    </DockPanel>
+        Title="MainWindown" Height="450" Width="800"
+        Background="#FFFDFDFD"
+        SizeToContent="Manual">
+
+    <!-- Lớp ngoài cùng để tự động co giãn -->
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto">
+
+        <!-- DockPanel cho bố cục linh hoạt -->
+        <DockPanel LastChildFill="True">
+
+            <!-- TopBar co giãn theo chiều ngang -->
+            <Controls:TopBar DockPanel.Dock="Top"
+                             Height="Auto"
+                             MinHeight="60"
+                             VerticalAlignment="Top"
+                             Background="#FF2E3A59"
+                             FontSize="{Binding ActualWidth, 
+                                        RelativeSource={RelativeSource AncestorType=Window}, 
+                                        Converter={StaticResource WidthToFontSizeConverter}}" />
+
+            <!-- Khung chính chiếm phần còn lại -->
+            <Grid x:Name="MainGrid"
+                  Margin="10"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch">
+                <Frame x:Name="MainFrame"
+                       NavigationUIVisibility="Hidden"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"/>
+            </Grid>
+        </DockPanel>
+    </ScrollViewer>
 </Window>

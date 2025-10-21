@@ -6,11 +6,13 @@
       xmlns:local="clr-namespace:UI.Views.Pages"
       xmlns:conv="clr-namespace:UI.Services"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="400" d:DesignWidth="800"
       Title="HomePage">
     <Page.Resources>
         <!-- 🔹 Style hiển thị placeholder cho ComboBox -->
         <conv:Converters x:Key="Converters"/>
+        <conv:WidthToFontSizeConverter x:Key="WidthToFontSizeConverter"/>
+
         <Style TargetType="ComboBox" x:Key="PlaceholderComboBox">
             <Setter Property="Template">
                 <Setter.Value>
@@ -69,14 +71,24 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
     </Page.Resources>
     <DockPanel>
-        <Grid Margin="40">
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="auto">
-                <TextBlock Text="🎓 Chọn chế độ" FontWeight="Bold" FontSize="18" Margin="0,0,0,10" />
-              
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,10">
-                    <RadioButton x:Name="OnlineModeRadio" Content="Online" Margin="10,0" Checked="ModeChanged"/>
-                    <RadioButton x:Name="OfflineModeRadio" Content="Offline" Margin="10,0" Checked="ModeChanged"/>
-                    <Button x:Name="RefreshButton"
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Auto">
+            <Viewbox Stretch="Uniform"
+                     StretchDirection="Both"
+                     MinWidth="550"
+                     MinHeight="150">
+
+                <Grid Margin="40">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="auto">
+                        <TextBlock Text="🎓 Chọn chế độ" FontWeight="Bold" FontSize="{Binding ActualWidth, 
+                                          RelativeSource={RelativeSource AncestorType=Window}, 
+                                          Converter={StaticResource WidthToFontSizeConverter}}"
+                                         Margin="0,0,0,10" />
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,10">
+                            <RadioButton x:Name="OnlineModeRadio" Content="Online" Margin="10,0" Checked="ModeChanged"/>
+                            <RadioButton x:Name="OfflineModeRadio" Content="Offline" Margin="10,0" Checked="ModeChanged"/>
+                            <Button x:Name="RefreshButton"
                             Content="🔄 Cập nhật dữ liệu"
                             Margin="20,0,0,0"
                             Padding="10,5"
@@ -84,26 +96,26 @@
                             Foreground="White"
                             FontWeight="Bold"
                             Click="RefreshButton_Click"/>
-                </StackPanel>
+                        </StackPanel>
 
-                <Separator Margin="0,15"/>
+                        <Separator Margin="0,15"/>
 
-                <!-- Hai ComboBox nằm cùng hàng -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
-                    <!-- Chọn lớp -->
-                    <StackPanel Width="250" Margin="0,0,20,0">
-                        <TextBlock Text="Chọn lớp:" FontWeight="Bold"/>
+                        <!-- Hai ComboBox nằm cùng hàng -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+                            <!-- Chọn lớp -->
+                            <StackPanel Width="250" Margin="0,0,20,0">
+                                <TextBlock Text="Chọn lớp:" FontWeight="Bold"/>
 
-                        <Grid Margin="0,5,0,0">
-                            <!-- ComboBox -->
-                            <ComboBox x:Name="ClassComboBox"
+                                <Grid Margin="0,5,0,0">
+                                    <!-- ComboBox -->
+                                    <ComboBox x:Name="ClassComboBox"
                       Height="30"
                       IsEditable="True"
                       IsTextSearchEnabled="False"
                       StaysOpenOnEdit="True"/>
 
-                            <!-- Placeholder -->
-                            <TextBlock Text="Nhập hoặc chọn lớp..."
+                                    <!-- Placeholder -->
+                                    <TextBlock Text="Nhập hoặc chọn lớp..."
                            Foreground="Gray"
                            Margin="20,0,0,0"
                            IsHitTestVisible="False"
@@ -111,21 +123,21 @@
                            Visibility="{Binding Text.IsEmpty,
                                                 ElementName=ClassComboBox,
                                                 Converter={StaticResource BoolToVisConverter}}"/>
-                        </Grid>
-                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
 
-                    <!-- Chọn môn -->
-                    <StackPanel Width="250">
-                        <TextBlock Text="Chọn môn học:" FontWeight="Bold"/>
+                            <!-- Chọn môn -->
+                            <StackPanel Width="250">
+                                <TextBlock Text="Chọn môn học:" FontWeight="Bold"/>
 
-                        <Grid Margin="0,5,0,0">
-                            <ComboBox x:Name="SubjectComboBox"
+                                <Grid Margin="0,5,0,0">
+                                    <ComboBox x:Name="SubjectComboBox"
                               Height="30"
                               IsEditable="True"
                               IsTextSearchEnabled="False"
                               StaysOpenOnEdit="True"/>
 
-                            <TextBlock Text="Nhập hoặc chọn môn..."
+                                    <TextBlock Text="Nhập hoặc chọn môn..."
                                Foreground="Gray"
                                Margin="20,0,0,0"
                                IsHitTestVisible="False"
@@ -133,11 +145,11 @@
                                Visibility="{Binding Text.IsEmpty,
                                                     ElementName=SubjectComboBox,
                                                     Converter={StaticResource BoolToVisConverter}}"/>
-                        </Grid>
-                    </StackPanel>
-                </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
 
-                <Button x:Name="SearchButton"
+                        <Button x:Name="SearchButton"
                     Content="🔍 Tìm bài tập"
                     Height="40"
                     Background="#4CAF50"
@@ -145,12 +157,14 @@
                     FontWeight="Bold"
                     Click="SearchButton_Click"/>
 
-                <TextBlock x:Name="LogTextBlock"
+                        <TextBlock x:Name="LogTextBlock"
                        FontSize="12"
                        Margin="0,15,0,0"
                        Foreground="Gray"
                        TextWrapping="Wrap"/>
-            </StackPanel>
-        </Grid>
+                    </StackPanel>
+                </Grid>
+            </Viewbox>
+        </ScrollViewer>
     </DockPanel>
 </Page>
