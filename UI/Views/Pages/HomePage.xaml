@@ -1,0 +1,156 @@
+﻿<Page x:Class="UI.Views.Pages.HomePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:UI.Views.Pages"
+      xmlns:conv="clr-namespace:UI.Services"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="HomePage">
+    <Page.Resources>
+        <!-- 🔹 Style hiển thị placeholder cho ComboBox -->
+        <conv:Converters x:Key="Converters"/>
+        <Style TargetType="ComboBox" x:Key="PlaceholderComboBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton Name="ToggleButton"
+                                          Grid.Column="2"
+                                          Focusable="false"
+                                          IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ClickMode="Press"
+                                          Background="Transparent"/>
+
+                            <ContentPresenter Name="ContentSite"
+                                              IsHitTestVisible="False"
+                                              Content="{TemplateBinding SelectionBoxItem}"
+                                              ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                              Margin="6,3,25,3"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"/>
+
+                            <!-- 🔸 Gợi ý hiển thị khi chưa chọn gì -->
+                            <TextBlock Text="{TemplateBinding Tag}"
+                                       Foreground="Gray"
+                                       Margin="8,3,25,3"
+                                       VerticalAlignment="Center"
+                                       IsHitTestVisible="False"
+                                       Visibility="{Binding SomeValue, Converter={StaticResource Converters}}"/>
+
+                            <Popup Name="Popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Grid Name="DropDown"
+                                      SnapsToDevicePixels="True"
+                                      MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder"
+                                            Background="White"
+                                            BorderThickness="1"
+                                            BorderBrush="#ccc" />
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Converter để kiểm tra null -->
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
+    </Page.Resources>
+    <DockPanel>
+        <Grid Margin="40">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="auto">
+                <TextBlock Text="🎓 Chọn chế độ" FontWeight="Bold" FontSize="18" Margin="0,0,0,10" />
+              
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,10">
+                    <RadioButton x:Name="OnlineModeRadio" Content="Online" Margin="10,0" Checked="ModeChanged"/>
+                    <RadioButton x:Name="OfflineModeRadio" Content="Offline" Margin="10,0" Checked="ModeChanged"/>
+                    <Button x:Name="RefreshButton"
+                            Content="🔄 Cập nhật dữ liệu"
+                            Margin="20,0,0,0"
+                            Padding="10,5"
+                            Background="#2196F3"
+                            Foreground="White"
+                            FontWeight="Bold"
+                            Click="RefreshButton_Click"/>
+                </StackPanel>
+
+                <Separator Margin="0,15"/>
+
+                <!-- Hai ComboBox nằm cùng hàng -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
+                    <!-- Chọn lớp -->
+                    <StackPanel Width="250" Margin="0,0,20,0">
+                        <TextBlock Text="Chọn lớp:" FontWeight="Bold"/>
+
+                        <Grid Margin="0,5,0,0">
+                            <!-- ComboBox -->
+                            <ComboBox x:Name="ClassComboBox"
+                      Height="30"
+                      IsEditable="True"
+                      IsTextSearchEnabled="False"
+                      StaysOpenOnEdit="True"/>
+
+                            <!-- Placeholder -->
+                            <TextBlock Text="Nhập hoặc chọn lớp..."
+                           Foreground="Gray"
+                           Margin="20,0,0,0"
+                           IsHitTestVisible="False"
+                           VerticalAlignment="Center"
+                           Visibility="{Binding Text.IsEmpty,
+                                                ElementName=ClassComboBox,
+                                                Converter={StaticResource BoolToVisConverter}}"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- Chọn môn -->
+                    <StackPanel Width="250">
+                        <TextBlock Text="Chọn môn học:" FontWeight="Bold"/>
+
+                        <Grid Margin="0,5,0,0">
+                            <ComboBox x:Name="SubjectComboBox"
+                              Height="30"
+                              IsEditable="True"
+                              IsTextSearchEnabled="False"
+                              StaysOpenOnEdit="True"/>
+
+                            <TextBlock Text="Nhập hoặc chọn môn..."
+                               Foreground="Gray"
+                               Margin="20,0,0,0"
+                               IsHitTestVisible="False"
+                               VerticalAlignment="Center"
+                               Visibility="{Binding Text.IsEmpty,
+                                                    ElementName=SubjectComboBox,
+                                                    Converter={StaticResource BoolToVisConverter}}"/>
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+
+                <Button x:Name="SearchButton"
+                    Content="🔍 Tìm bài tập"
+                    Height="40"
+                    Background="#4CAF50"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    Click="SearchButton_Click"/>
+
+                <TextBlock x:Name="LogTextBlock"
+                       FontSize="12"
+                       Margin="0,15,0,0"
+                       Foreground="Gray"
+                       TextWrapping="Wrap"/>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Page>
