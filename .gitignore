@@ -53,3 +53,12 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 /UI/appsettings.json
+
+# App settings (bỏ secrets ra khỏi git)
+appsettings.json
+appsettings.Development.json
+appsettings.*.json
+.env
+
+
+.vs/
